@@ -1,12 +1,17 @@
 "use client"
-
 import { AuthContextProvider } from "./_utils/auth-context";
-import HomePage from "./components/homepage";
+import NavBar from "./components/navbar";
+
 
 export default function Page(){
+
+
+
   return(
-    <AuthContextProvider>
-     <HomePage/>  
-    </AuthContextProvider>
+   <AuthContextProvider>
+     <NavBar/>
+  </AuthContextProvider>
+
+  
   )
 }
