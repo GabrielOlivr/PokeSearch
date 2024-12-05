@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { dbAddItem } from "../_services/cards-service";
 
-const Collection = () => {
+export default function Collection(){
   const [collection, setCollection] = useState([]);
 
   const drawCard = async () => {
@@ -51,4 +51,4 @@ const Collection = () => {
   );
 };
 
-export default Collection;
+

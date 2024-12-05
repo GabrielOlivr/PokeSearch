@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 
-const PokemonCard = ({ pokemon }) => {
+export default function PokemonCard({ pokemon }){
   if (!pokemon) return <p className="text-gray-500 font-mono">No Pokémon found.</p>;
 
   return (
@@ -11,4 +11,4 @@ const PokemonCard = ({ pokemon }) => {
   );
 };
 
-export default PokemonCard;
+

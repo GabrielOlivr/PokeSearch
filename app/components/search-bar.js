@@ -1,12 +1,18 @@
 "use client";
 import React, { useState } from "react";
 
-const SearchBar = ({ onSearch }) => {
+export default function SearchBar ({ onSearch }) {
   const [query, setQuery] = useState("");
 
   const handleSearch = () => {
     onSearch(query);
   };
+
+  const handleEnterKey = (e) => {
+    if (e.key === "Enter"){
+      handleSearch();
+    }
+  }
 
   return (
     <div className="flex items-center space-x-4">
@@ -15,6 +21,7 @@ const SearchBar = ({ onSearch }) => {
         placeholder="Search Pokémon"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
+        onKeyDown={handleEnterKey}
         className="border border-gray-300 rounded px-4 py-2 focus:outline-none font-mono focus:ring-2 focus:ring-violet-400 text-black"
       />
       <button
@@ -27,4 +34,4 @@ const SearchBar = ({ onSearch }) => {
   );
 };
 
-export default SearchBar;
+

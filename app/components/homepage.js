@@ -6,7 +6,7 @@ import PokemonCard from "./pokemon-card";
 import { useUserAuth } from "../_utils/auth-context";
 import Link from "next/link";
 
-const HomePage = () => {
+export default function HomePage(){
   const [pokemon, setPokemon] = useState(null);
   const [selectedPokemon, setSelectedPokemon] = useState(null); // State for selected Pokémon
   const { gitHubSignIn, user, firebaseSignOut } = useUserAuth();
@@ -27,7 +27,7 @@ const HomePage = () => {
         abilities: data.abilities.map((ability) => ability.ability.name).join(", "),     
       });
     } catch {
-      setPokemon(null);
+      setSelectedPokemon(null);
     }
   };
 
@@ -56,7 +56,7 @@ const HomePage = () => {
   const handlePokemonClick = () => {
     setSelectedPokemon(pokemon); 
   };
-
+  
   return (
     <main className="bg-[url('/img/pk.png')] bg-cover bg-center bg-no-repeat min-h-screen">
       <div className="container mx-auto p-4">
@@ -131,4 +131,4 @@ const HomePage = () => {
   );
 };
 
-export default HomePage;
+
