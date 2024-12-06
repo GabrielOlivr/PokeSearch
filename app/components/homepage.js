@@ -2,19 +2,21 @@
 import React, { useState, useEffect } from "react";
 import { MdCatchingPokemon } from "react-icons/md";
 import SearchBar from "./search-bar";
-import PokemonCard from "./pokemon-card";
 import { useUserAuth } from "../_utils/auth-context";
 import Link from "next/link";
 
-export default function HomePage(){
-  const [pokemon, setPokemon] = useState(null);
-  const [selectedPokemon, setSelectedPokemon] = useState(null); // State for selected Pokémon
+export default function HomePage() {
+  const [pokemon, setPokemon] = useState(null); 
   const { gitHubSignIn, user, firebaseSignOut } = useUserAuth();
   const [userName, setUserName] = useState("");
+  const [searchAttempted, setSearchAttempted] = useState(false); 
 
   const fetchPokemon = async (query) => {
+    setSearchAttempted(true); 
     try {
-      const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${query.toLowerCase()}`);
+      const response = await fetch(
+        `https://pokeapi.co/api/v2/pokemon/${query.toLowerCase()}`
+      );
       const data = await response.json();
 
       setPokemon({
@@ -24,10 +26,10 @@ export default function HomePage(){
         species: data.species.name,
         height: data.height,
         weight: data.weight,
-        abilities: data.abilities.map((ability) => ability.ability.name).join(", "),     
+        abilities: data.abilities.map((ability) => ability.ability.name).join(", "),
       });
     } catch {
-      setSelectedPokemon(null);
+      setPokemon(null); 
     }
   };
 
@@ -53,17 +55,18 @@ export default function HomePage(){
     }
   };
 
-  const handlePokemonClick = () => {
-    setSelectedPokemon(pokemon); 
-  };
-  
   return (
     <main className="bg-[url('/img/pk.png')] bg-cover bg-center bg-no-repeat min-h-screen">
       <div className="container mx-auto p-4">
         <div className="flex items-center justify-between mb-4">
-          <h1 className="text-2xl font-bold font-mono flex items-center space-x-4"><MdCatchingPokemon size={"2em"}/>Pokémon Search</h1>
+          <h1 className="text-2xl font-bold font-mono flex items-center space-x-4">
+            <MdCatchingPokemon size={"2em"} />
+            Pokémon Search
+          </h1>
           <div className="flex items-center space-x-4">
-            {user && <p className="text-sm text-white font-mono">Logged in as: {userName}</p>}
+            {user && (
+              <p className="text-sm text-white font-mono">Logged in as: {userName}</p>
+            )}
             {user && (
               <Link
                 href="cards"
@@ -91,44 +94,40 @@ export default function HomePage(){
         </div>
         <div className="flex flex-col items-center space-y-4">
           <SearchBar onSearch={fetchPokemon} />
+          {searchAttempted && pokemon === null && (
+            <p className="text-red-500/70 mr-24 font-mono">Pokémon not found.</p>
+          )}
           {pokemon && (
-            <div onClick={handlePokemonClick} className="bg-violet-600 hover:bg-violet-400 cursor-pointer">
-              <PokemonCard pokemon={pokemon} />
+            <div className="flex justify-center items-center mt-8">
+              <div className="bg-white/75 text-black p-4 rounded shadow-lg w-full">
+                <h2 className="flex justify-center items-center text-xl font-bold font-mono mb-4">
+                  {pokemon.name.toUpperCase()}
+                </h2>
+                <img
+                  src={pokemon.sprite}
+                  alt={pokemon.name}
+                  className="mx-auto mb-2"
+                />
+                <p>
+                  <strong className="font-mono text-lg">Type:</strong> {pokemon.type}
+                </p>
+                <p>
+                  <strong className="font-mono text-lg">Species:</strong> {pokemon.species}
+                </p>
+                <p>
+                  <strong className="font-mono text-lg">Height:</strong> {pokemon.height}
+                </p>
+                <p>
+                  <strong className="font-mono text-lg">Weight:</strong> {pokemon.weight}
+                </p>
+                <p>
+                  <strong className="font-mono text-lg">Abilities:</strong> {pokemon.abilities}
+                </p>
+              </div>
             </div>
           )}
         </div>
-        {selectedPokemon && (
-        <div className="flex justify-center items-center mt-8">
-          <div className="bg-white/75 text-black p-4 rounded shadow-lg w-full max-w-md">
-            <h2 className="flex justify-center items-center text-xl font-bold font-mono mb-4">
-              {selectedPokemon.name.toUpperCase()}
-            </h2>
-            <img
-              src={selectedPokemon.sprite}
-              alt={selectedPokemon.name}
-              className="mx-auto mb-2"
-            />
-            <p>
-              <strong className="font-mono text-lg">Type:</strong> {selectedPokemon.type}
-            </p>
-            <p>
-              <strong className="font-mono text-lg">Species:</strong> {selectedPokemon.species}
-            </p>
-            <p>
-              <strong className="font-mono text-lg">Height:</strong> {selectedPokemon.height} 
-            </p>
-            <p>
-              <strong className="font-mono text-lg">Weight:</strong> {selectedPokemon.weight} 
-            </p>
-            <p>
-              <strong className="font-mono text-lg">Abilities:</strong> {selectedPokemon.abilities}
-            </p>
-          </div>
-        </div>
-        )}
       </div>
     </main>
   );
-};
-
-
+}

@@ -1,17 +1,17 @@
 "use client";
 import React, { useState } from "react";
 
-const CardsPage = () => {
+export default function CardsPage(){
   const [collection, setCollection] = useState([]);
 
   const drawCard = async () => {
-    const id = Math.floor(Math.random() * 898) + 1; // Total Pokémon count
+    const id = Math.floor(Math.random() * 898) + 1;
     try {
       const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
       const data = await response.json();
       setCollection([...collection, data]);
     } catch (error) {
-      console.error("Failed to fetch Pokémon data", error);
+      console.error("Failed to fetch Pokémon", error);
     }
   };
 
@@ -20,7 +20,7 @@ const CardsPage = () => {
       <h1 className="text-2xl font-bold mb-4">Your Pokémon Collection</h1>
       <button
         onClick={drawCard}
-        className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 mb-4"
+        className="bg-violet-600 text-white px-4 py-2 rounded hover:bg-violet-400 mb-4"
       >
         Draw Pokémon Card
       </button>
@@ -47,4 +47,3 @@ const CardsPage = () => {
   );
 };
 
-export default CardsPage;
