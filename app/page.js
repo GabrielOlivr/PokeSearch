@@ -1,15 +1,23 @@
 "use client"
-import { AuthContextProvider } from "./_utils/auth-context";
+import { AuthContextProvider, useUserAuth } from "./_utils/auth-context";
+import CardsPage from "./cards/page";
 import HomePage from "./components/homepage";
 
-export default function Page(){
+export default function Page() {
+  return (
+    <AuthContextProvider>
+      <HomePage />
+      <AuthenticatedContent /> 
+    </AuthContextProvider>
+  );
+}
 
+function AuthenticatedContent() {
+  const { user } = useUserAuth();
   
-  return(
-   <AuthContextProvider>
-    <HomePage/>
-  </AuthContextProvider>
-
+  if (user) {
+    return <CardsPage />;
+  }
   
-  )
+  return null;
 }

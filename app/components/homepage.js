@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 import { MdCatchingPokemon } from "react-icons/md";
 import SearchBar from "./search-bar";
 import { useUserAuth } from "../_utils/auth-context";
-import Link from "next/link";
 
 export default function HomePage() {
   const [pokemon, setPokemon] = useState(null); 
@@ -66,14 +65,6 @@ export default function HomePage() {
           <div className="flex items-center space-x-4">
             {user && (
               <p className="text-sm text-white font-mono">Logged in as: {userName}</p>
-            )}
-            {user && (
-              <Link
-                href="cards"
-                className="bg-violet-600 text-white px-4 py-2 rounded font-mono hover:bg-violet-400"
-              >
-                Cards
-              </Link>
             )}
             {!user ? (
               <button
